@@ -1,0 +1,1615 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, maximum-scale=3.0, minimum-scale=0.5">
+    <title>英単語語源クイズ - 中学生のための語源学習アプリ</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;600;700&family=Noto+Sans+JP:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* 既存のCSSはそのまま */
+        :root {
+            --primary-charcoal: #1a1d23;
+            --primary-slate: #2a2f3a;
+            --primary-graphite: #363c4a;
+            --accent-gold: #d4af37;
+            --accent-platinum: #e5e7eb;
+            --accent-emerald: #059669;
+            --accent-crimson: #dc2626;
+            --bg-obsidian: #0f1419;
+            --bg-midnight: #1a1d23;
+            --bg-charcoal: #2a2f3a;
+            --text-pearl: #f8fafc;
+            --text-silver: #cbd5e1;
+            --text-graphite: #64748b;
+            --glass-dark: rgba(42, 47, 58, 0.85);
+            --shadow-luxury: rgba(0, 0, 0, 0.4);
+            --shadow-gold: rgba(212, 175, 55, 0.3);
+            --gradient-luxury: linear-gradient(135deg, rgba(212, 175, 55, 0.1) 0%, rgba(5, 150, 105, 0.1) 100%);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+            overflow-y: auto;
+        }
+
+        body {
+            font-family: "Noto Sans JP", "Inter", sans-serif;
+            background: var(--bg-obsidian);
+            background-image: 
+                radial-gradient(circle at 25% 25%, rgba(212, 175, 55, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 75% 75%, rgba(5, 150, 105, 0.05) 0%, transparent 50%);
+            min-height: 100vh;
+            overflow-x: hidden;
+            overflow-y: auto;
+            color: var(--text-pearl);
+            position: relative;
+            font-weight: 400;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            touch-action: pan-y pinch-zoom;
+        }
+
+        .luxury-backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                linear-gradient(45deg, transparent 49%, rgba(212, 175, 55, 0.02) 50%, transparent 51%),
+                linear-gradient(-45deg, transparent 49%, rgba(5, 150, 105, 0.02) 50%, transparent 51%);
+            background-size: 60px 60px, 80px 80px;
+            animation: luxuryShift 20s linear infinite;
+            opacity: 0.6;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        @keyframes luxuryShift {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(60px, 60px); }
+        }
+
+        .platinum-card {
+            background: var(--glass-dark);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            border-radius: 16px;
+            box-shadow: 
+                0 24px 48px var(--shadow-luxury),
+                inset 0 1px 0 rgba(248, 250, 252, 0.1);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            touch-action: auto;
+        }
+
+        .platinum-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--accent-gold), transparent);
+        }
+
+        .platinum-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 
+                0 32px 64px var(--shadow-luxury),
+                0 0 48px var(--shadow-gold),
+                inset 0 1px 0 rgba(248, 250, 252, 0.2);
+            border-color: var(--accent-gold);
+        }
+
+        .main-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            font-weight: 700;
+            text-align: center;
+            background: linear-gradient(135deg, var(--accent-gold) 0%, var(--text-pearl) 50%, var(--accent-gold) 100%);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: luxuryGlow 4s ease-in-out infinite;
+            margin-bottom: 1rem;
+            letter-spacing: -0.02em;
+        }
+
+        @keyframes luxuryGlow {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .container-main {
+            position: relative;
+            z-index: 10;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            touch-action: auto;
+        }
+
+        .modern-button {
+            background: linear-gradient(135deg, var(--primary-slate) 0%, var(--primary-graphite) 100%);
+            border: 1px solid var(--accent-gold);
+            color: var(--text-pearl);
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            letter-spacing: 0.025em;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+            touch-action: manipulation;
+        }
+
+        .modern-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.2), transparent);
+            transition: left 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .modern-button:hover::before {
+            left: 100%;
+        }
+
+        .modern-button:hover {
+            transform: translateY(-2px);
+            background: linear-gradient(135deg, var(--accent-gold) 0%, #b8941f 100%);
+            color: var(--primary-charcoal);
+            box-shadow: 0 8px 32px var(--shadow-gold);
+        }
+
+        .modern-button:disabled {
+            background: var(--primary-graphite);
+            border-color: var(--text-graphite);
+            color: var(--text-graphite);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .modern-button:disabled::before {
+            display: none;
+        }
+
+        .option-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+            touch-action: auto;
+        }
+
+        .option-card {
+            background: var(--glass-dark);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(203, 213, 225, 0.1);
+            border-radius: 12px;
+            padding: 2rem;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            touch-action: manipulation;
+        }
+
+        .option-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--accent-gold), var(--accent-emerald));
+            transform: scaleX(0);
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .option-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .option-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(212, 175, 55, 0.3);
+            box-shadow: 
+                0 16px 48px rgba(0, 0, 0, 0.3),
+                0 0 32px rgba(212, 175, 55, 0.1);
+        }
+
+        .option-card.selected {
+            background: var(--gradient-luxury);
+            border-color: var(--accent-gold);
+            transform: translateY(-4px);
+        }
+
+        .option-card.selected::before {
+            transform: scaleX(1);
+        }
+
+        .card-icon {
+            width: 64px;
+            height: 64px;
+            margin: 0 auto 1.5rem auto;
+            background: linear-gradient(135deg, var(--accent-gold), var(--accent-emerald));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card-icon::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            animation: iconShine 3s ease-in-out infinite;
+        }
+
+        @keyframes iconShine {
+            0%, 100% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            50% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+        }
+
+        .voice-panel {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: var(--glass-dark);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            border-radius: 12px;
+            padding: 1rem;
+            z-index: 1001;
+            display: flex;
+            gap: 0.75rem;
+            align-items: center;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            touch-action: manipulation;
+        }
+
+        .voice-button {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            border: 1px solid rgba(203, 213, 225, 0.2);
+            background: var(--primary-slate);
+            color: var(--text-silver);
+            font-size: 0.875rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            touch-action: manipulation;
+        }
+
+        .voice-button:hover {
+            background: var(--accent-gold);
+            color: var(--primary-charcoal);
+            border-color: var(--accent-gold);
+            transform: scale(1.05);
+        }
+
+        .voice-button.active {
+            background: linear-gradient(135deg, var(--accent-gold), #b8941f);
+            color: var(--primary-charcoal);
+            border-color: var(--accent-gold);
+            animation: voiceActive 2s ease-in-out infinite;
+        }
+
+        @keyframes voiceActive {
+            0%, 100% { box-shadow: 0 0 12px rgba(212, 175, 55, 0.4); }
+            50% { box-shadow: 0 0 24px rgba(212, 175, 55, 0.8); }
+        }
+
+        .answer-option {
+            background: var(--glass-dark);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(203, 213, 225, 0.15);
+            border-radius: 8px;
+            padding: 1.25rem;
+            margin: 0.75rem 0;
+            color: var(--text-pearl);
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            touch-action: manipulation;
+        }
+
+        .answer-option::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.1), transparent);
+            transition: left 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .answer-option:hover::before {
+            left: 100%;
+        }
+
+        .answer-option:hover {
+            border-color: rgba(212, 175, 55, 0.4);
+            transform: translateY(-1px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+        }
+
+        .answer-option.correct {
+            background: linear-gradient(135deg, rgba(5, 150, 105, 0.2), rgba(16, 185, 129, 0.2));
+            border-color: var(--accent-emerald);
+            animation: correctAnswer 0.8s ease;
+        }
+
+        .answer-option.wrong {
+            background: linear-gradient(135deg, rgba(220, 38, 38, 0.2), rgba(239, 68, 68, 0.2));
+            border-color: var(--accent-crimson);
+            animation: wrongAnswer 0.6s ease;
+        }
+
+        @keyframes correctAnswer {
+            0%, 100% { box-shadow: 0 0 16px rgba(5, 150, 105, 0.4); }
+            50% { box-shadow: 0 0 32px rgba(5, 150, 105, 0.8); }
+        }
+
+        @keyframes wrongAnswer {
+            0%, 100% { transform: translateX(0); }
+            20%, 80% { transform: translateX(-2px); }
+            40%, 60% { transform: translateX(2px); }
+        }
+
+        .stats-card {
+            background: var(--gradient-luxury);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 16px;
+            padding: 2rem;
+            text-align: center;
+            color: var(--text-pearl);
+            margin: 2rem 0;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 16px 48px rgba(0, 0, 0, 0.2);
+            touch-action: auto;
+        }
+
+        .stats-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent 48%, rgba(212, 175, 55, 0.02) 50%, transparent 52%);
+            animation: statsAnimation 8s linear infinite;
+        }
+
+        @keyframes statsAnimation {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .stats-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(203, 213, 225, 0.2);
+            border-radius: 8px;
+            overflow: hidden;
+            margin: 1.5rem 0;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-gold), var(--accent-emerald));
+            border-radius: 8px;
+            transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+
+        .progress-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            animation: progressGlow 2.5s ease-in-out infinite;
+        }
+
+        @keyframes progressGlow {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 20, 25, 0.9);
+            backdrop-filter: blur(12px);
+            align-items: flex-start;
+            justify-content: center;
+            z-index: 1000;
+            padding: 1rem;
+            overflow-y: auto;
+            touch-action: auto;
+        }
+
+        .modal.show {
+            display: flex;
+            animation: modalShow 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        @keyframes modalShow {
+            from {
+                opacity: 0;
+                transform: scale(0.95) translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .home-button {
+            position: fixed;
+            bottom: 32px;
+            right: 32px;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent-gold), #b8941f);
+            color: var(--primary-charcoal);
+            font-size: 1.25rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 1000;
+            animation: floatAnimation 4s ease-in-out infinite;
+            box-shadow: 0 8px 32px rgba(212, 175, 55, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            touch-action: manipulation;
+        }
+
+        @keyframes floatAnimation {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-8px) rotate(180deg); }
+        }
+
+        .home-button:hover {
+            transform: scale(1.1) translateY(-4px);
+            box-shadow: 0 16px 48px rgba(212, 175, 55, 0.6);
+        }
+
+        .notification {
+            position: fixed;
+            top: 32px;
+            right: 32px;
+            background: var(--glass-dark);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            color: var(--text-pearl);
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            transform: translateX(400px);
+            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 1002;
+            font-weight: 500;
+            box-shadow: 0 16px 48px rgba(0, 0, 0, 0.3);
+            min-width: 280px;
+            touch-action: auto;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        .word-display {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.75rem;
+            font-weight: 600;
+            text-align: center;
+            background: linear-gradient(135deg, var(--accent-gold), var(--text-pearl));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin: 2rem 0;
+            animation: wordGlow 3s ease-in-out infinite;
+            letter-spacing: -0.01em;
+        }
+
+        @keyframes wordGlow {
+            0%, 100% { filter: brightness(1); }
+            50% { filter: brightness(1.15); }
+        }
+
+        .subtitle {
+            font-size: 1.125rem;
+            color: var(--text-silver);
+            font-weight: 400;
+            line-height: 1.7;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .metric-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+
+        .metric-label {
+            font-size: 0.875rem;
+            color: var(--text-silver);
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .scrollable-content {
+            touch-action: auto;
+            overflow-y: auto;
+            max-height: calc(100vh - 2rem);
+            padding-bottom: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            .option-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+            
+            .container-main {
+                padding: 1rem;
+            }
+
+            .voice-panel {
+                top: 10px;
+                left: 10px;
+                padding: 0.75rem;
+                gap: 0.5rem;
+            }
+
+            .voice-button {
+                width: 36px;
+                height: 36px;
+                font-size: 0.75rem;
+            }
+
+            .notification {
+                top: 16px;
+                right: 16px;
+                left: 16px;
+                min-width: auto;
+                transform: translateY(-100px);
+            }
+
+            .notification.show {
+                transform: translateY(0);
+            }
+
+            .home-button {
+                bottom: 16px;
+                right: 16px;
+                width: 48px;
+                height: 48px;
+                font-size: 1rem;
+            }
+
+            .modal {
+                padding: 0.5rem;
+                align-items: flex-start;
+                padding-top: 1rem;
+            }
+
+            .main-title {
+                font-size: clamp(2rem, 8vw, 3.5rem);
+            }
+
+            .word-display {
+                font-size: clamp(2rem, 6vw, 2.5rem);
+            }
+
+            .platinum-card {
+                margin-bottom: 1rem;
+            }
+
+            .option-grid {
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+                gap: 1rem;
+            }
+
+            .option-card {
+                padding: 1.5rem;
+            }
+
+            .card-icon {
+                width: 48px;
+                height: 48px;
+                font-size: 1.5rem;
+            }
+
+            .grade-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1rem;
+            }
+
+            .answer-option {
+                padding: 1rem;
+                margin: 0.5rem 0;
+                font-size: 0.95rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container-main {
+                padding: 0.75rem;
+            }
+
+            .modern-button {
+                padding: 0.875rem 1.5rem;
+                font-size: 0.9rem;
+            }
+
+            .grade-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .notification {
+                padding: 0.75rem 1rem;
+                font-size: 0.875rem;
+            }
+        }
+
+        .grade-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .pos-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        @media (min-width: 768px) {
+            .pos-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-center relative">
+    <!-- 背景アニメーション -->
+    <div class="luxury-backdrop"></div>
+
+    <!-- 音声コントロールパネル -->
+    <div class="voice-panel">
+        <div class="text-xs font-medium text-gray-400 uppercase tracking-wide">音声</div>
+        <button class="voice-button" id="maleVoiceBtn" title="男性の声">♂</button>
+        <button class="voice-button" id="femaleVoiceBtn" title="女性の声">♀</button>
+        <button class="voice-button" id="speakBtn" title="単語を読み上げ">🔊</button>
+    </div>
+
+    <!-- カテゴリー選択画面 -->
+    <div id="categorySelectionModal" class="modal show">
+        <div class="platinum-card p-12 container-main max-w-5xl scrollable-content">
+            <div class="text-center mb-16">
+                <h1 class="main-title">英単語語源クイズ</h1>
+                <h2 class="text-xl font-medium mb-6 text-gray-300">
+                    中学生のための語源学習アプリ
+                </h2>
+                <p class="subtitle">
+                    英単語の語源を学んで、単語の意味を深く理解しよう！楽しく学習できるクイズ形式で語彙力をアップ。
+                </p>
+            </div>
+            
+            <div class="option-grid">
+                <div class="option-card category-option" data-category="grade">
+                    <div class="text-center">
+                        <div class="card-icon">
+                            <div class="text-2xl">📊</div>
+                        </div>
+                        <h3 class="text-2xl font-semibold mb-4 text-gray-100">学年別学習</h3>
+                        <p class="text-gray-400 mb-4">中学1年生から3年生まで、段階的に語源を学習</p>
+                        <div class="text-sm text-amber-400 font-medium">671単語を収録</div>
+                    </div>
+                </div>
+                
+                <div class="option-card category-option" data-category="pos">
+                    <div class="text-center">
+                        <div class="card-icon">
+                            <div class="text-2xl">🔬</div>
+                        </div>
+                        <h3 class="text-2xl font-semibold mb-4 text-gray-100">品詞別学習</h3>
+                        <p class="text-gray-400 mb-4">名詞・動詞・形容詞など品詞ごとに体系的に学習</p>
+                        <div class="text-sm text-amber-400 font-medium">695単語を収録</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center mt-12">
+                <button id="selectCategoryBtn" class="modern-button text-base px-12 py-4" disabled>
+                    学習を始める
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 学年選択画面 -->
+    <div id="gradeSelectionModal" class="modal">
+        <div class="platinum-card p-10 container-main max-w-4xl scrollable-content">
+            <div class="text-center mb-12">
+                <h1 class="main-title text-3xl">学年別学習</h1>
+                <p class="subtitle">あなたの学年を選択してください</p>
+            </div>
+            
+            <div class="grade-grid mb-10">
+                <div class="option-card grade-option" data-grade="grade1">
+                    <div class="text-center">
+                        <div class="card-icon">
+                            <div class="text-xl">中1</div>
+                        </div>
+                        <h3 class="text-xl font-semibold text-green-400 mb-2">基礎レベル</h3>
+                        <p class="text-gray-400 text-sm mb-3">中学1年生 • 基本的な語根を学習</p>
+                        <div class="text-amber-400 font-medium text-sm">223の語源エントリー</div>
+                    </div>
+                </div>
+                
+                <div class="option-card grade-option" data-grade="grade2">
+                    <div class="text-center">
+                        <div class="card-icon">
+                            <div class="text-xl">中2</div>
+                        </div>
+                        <h3 class="text-xl font-semibold text-blue-400 mb-2">中級レベル</h3>
+                        <p class="text-gray-400 text-sm mb-3">中学2年生 • 語彙の幅を広げる</p>
+                        <div class="text-amber-400 font-medium text-sm">194の語源エントリー</div>
+                    </div>
+                </div>
+                
+                <div class="option-card grade-option" data-grade="grade3">
+                    <div class="text-center">
+                        <div class="card-icon">
+                            <div class="text-xl">中3</div>
+                        </div>
+                        <h3 class="text-xl font-semibold text-purple-400 mb-2">上級レベル</h3>
+                        <p class="text-gray-400 text-sm mb-3">中学3年生 • 複雑な語源を理解</p>
+                        <div class="text-amber-400 font-medium text-sm">254の語源エントリー</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="flex gap-4 justify-center flex-wrap">
+                <button id="backToCategoryBtn" class="modern-button px-8 py-3">
+                    ← カテゴリーに戻る
+                </button>
+                <button id="startGradeGameBtn" class="modern-button px-8 py-3" disabled>
+                    クイズを始める
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 品詞選択画面 -->
+    <div id="posSelectionModal" class="modal">
+        <div class="platinum-card p-10 container-main max-w-6xl scrollable-content">
+            <div class="text-center mb-12">
+                <h1 class="main-title text-3xl">品詞別学習</h1>
+                <p class="subtitle">学習したい品詞を選択してください</p>
+            </div>
+            
+            <div class="pos-grid mb-10">
+                <div class="option-card pos-option" data-pos="noun">
+                    <div class="text-center">
+                        <div class="card-icon">
+                            <div class="text-lg">名</div>
+                        </div>
+                        <h3 class="text-lg font-semibold text-blue-400">名詞</h3>
+                        <div class="text-amber-400 text-sm font-medium mt-2">314単語</div>
+                    </div>
+                </div>
+                
+                <div class="option-card pos-option" data-pos="verb">
+                    <div class="text-center">
+                        <div class="card-icon">
+                            <div class="text-lg">動</div>
+                        </div>
+                        <h3 class="text-lg font-semibold text-green-400">動詞</h3>
+                        <div class="text-amber-400 text-sm font-medium mt-2">133単語</div>
+                    </div>
+                </div>
+                
+                <div class="option-card pos-option" data-pos="adjective">
+                    <div class="text-center">
+                        <div class="card-icon">
+                            <div class="text-lg">形</div>
+                        </div>
+                        <h3 class="text-lg font-semibold text-pink-400">形容詞</h3>
+                        <div class="text-amber-400 text-sm font-medium mt-2">155単語</div>
+                    </div>
+                </div>
+                
+                <div class="option-card pos-option" data-pos="adverb">
+                    <div class="text-center">
+                        <div class="card-icon">
+                            <div class="text-lg">副</div>
+                        </div>
+                        <h3 class="text-lg font-semibold text-yellow-400">副詞</h3>
+                        <div class="text-amber-400 text-sm font-medium mt-2">39単語</div>
+                    </div>
+                </div>
+                
+                <div class="option-card pos-option" data-pos="preposition">
+                    <div class="text-center">
+                        <div class="card-icon">
+                            <div class="text-lg">前</div>
+                        </div>
+                        <h3 class="text-lg font-semibold text-indigo-400">前置詞</h3>
+                        <div class="text-amber-400 text-sm font-medium mt-2">19単語</div>
+                    </div>
+                </div>
+                
+                <div class="option-card pos-option" data-pos="pronoun">
+                    <div class="text-center">
+                        <div class="card-icon">
+                            <div class="text-lg">代</div>
+                        </div>
+                        <h3 class="text-lg font-semibold text-purple-400">代名詞</h3>
+                        <div class="text-amber-400 text-sm font-medium mt-2">27単語</div>
+                    </div>
+                </div>
+                
+                <div class="option-card pos-option" data-pos="functional">
+                    <div class="text-center">
+                        <div class="card-icon">
+                            <div class="text-lg">機</div>
+                        </div>
+                        <h3 class="text-lg font-semibold text-orange-400">機能語</h3>
+                        <div class="text-amber-400 text-sm font-medium mt-2">8単語</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="flex gap-4 justify-center flex-wrap">
+                <button id="backToCategoryFromPosBtn" class="modern-button px-8 py-3">
+                    ← カテゴリーに戻る
+                </button>
+                <button id="startPosGameBtn" class="modern-button px-8 py-3" disabled>
+                    クイズを始める
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ゲーム画面 -->
+    <div id="gameScreen" class="hidden w-full scrollable-content">
+        <div class="platinum-card p-8 container-main mb-8">
+            <h1 class="main-title text-3xl mb-6">英単語語源クイズ</h1>
+            <div id="currentMode" class="text-xl font-medium text-center text-amber-400 mb-8"></div>
+            
+            <!-- 成績表示 -->
+            <div class="stats-card">
+                <div class="stats-content">
+                    <div class="grid grid-cols-3 gap-8 text-center mb-6">
+                        <div>
+                            <div class="metric-number text-emerald-400" id="correctCount">0</div>
+                            <div class="metric-label">正解</div>
+                        </div>
+                        <div>
+                            <div class="metric-number text-red-400" id="wrongCount">0</div>
+                            <div class="metric-label">不正解</div>
+                        </div>
+                        <div>
+                            <div class="metric-number text-blue-400" id="totalCount">0</div>
+                            <div class="metric-label">合計</div>
+                        </div>
+                    </div>
+                    
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center">
+                <button id="nextQuestionBtn" class="modern-button text-lg px-12 py-4">
+                    次の問題
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- クイズモーダル -->
+    <div id="quizModal" class="modal">
+        <div class="platinum-card p-8 w-full max-w-3xl mx-4 scrollable-content">
+            <div class="text-center mb-8">
+                <h2 class="text-2xl font-semibold text-amber-400 mb-4">
+                    語源クイズ
+                </h2>
+                <div id="questionNumber" class="text-lg text-gray-400"></div>
+            </div>
+            
+            <!-- 語源の説明 -->
+            <div class="platinum-card p-6 mb-6 border border-amber-500/30">
+                <div class="text-lg leading-relaxed text-gray-200" id="etymologyText"></div>
+            </div>
+            
+            <!-- ヒント表示 -->
+            <div class="platinum-card p-4 mb-6 border border-emerald-500/30" id="hintDisplay" style="display: none;">
+                <div class="text-base text-gray-300" id="hintText"></div>
+            </div>
+            
+            <div class="text-center mb-8">
+                <p class="text-xl font-medium text-gray-200 mb-6">
+                    この語源を持つ単語はどれでしょう？
+                </p>
+                <button id="showHintBtn" class="modern-button px-6 py-3">
+                    ヒントを見る
+                </button>
+            </div>
+            
+            <!-- 選択肢 -->
+            <div id="quizOptions" class="space-y-3 mb-8"></div>
+            
+            <!-- 結果表示 -->
+            <div id="resultDisplay" class="text-center mb-8" style="display: none;">
+                <div id="resultText" class="text-2xl font-bold mb-6"></div>
+                <div class="word-display" id="correctWord"></div>
+                <div class="platinum-card p-6 border border-emerald-500/30">
+                    <div class="text-base leading-relaxed text-gray-200" id="fullExplanation"></div>
+                </div>
+            </div>
+            
+            <div class="flex gap-4 justify-center flex-wrap">
+                <button id="nextQuizBtn" class="modern-button px-8 py-3" style="display: none;">
+                    次の問題へ
+                </button>
+                <button id="backToGameBtn" class="modern-button px-8 py-3">
+                    ダッシュボードへ
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ホームボタン -->
+    <button id="backToSelectionBtn" class="home-button" style="display: none;">
+        🏠
+    </button>
+
+    <!-- 通知 -->
+    <div id="notification" class="notification">
+        <div class="flex items-center gap-3">
+            <span class="text-xl">⚡</span>
+            <div>
+                <div class="font-semibold">語源クイズ</div>
+                <div id="notificationText" class="text-sm text-gray-300"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 外部データ -->
+    <script src="etymology-data.js"></script>
+    
+    <script>
+        // ゲーム状態
+        let currentCategory = '';
+        let currentSelection = '';
+        let currentQuestionData = null;
+        let correctCount = 0;
+        let wrongCount = 0;
+        let totalCount = 0;
+        let usedWords = [];
+        let questionAnswered = false;
+        
+        // 音声システム
+        let currentVoiceGender = 'female';
+        let speechSynthesis = window.speechSynthesis;
+        let currentWord = '';
+
+        // 音声システム
+        class AudioSystem {
+            constructor() {
+                this.audioContext = null;
+                this.initAudio();
+            }
+
+            initAudio() {
+                try {
+                    this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                } catch (e) {
+                    console.log('音声システムの初期化に失敗しました');
+                }
+            }
+
+            playClick() {
+                this.createTone(800, 0.08, 0.12, 'sine');
+            }
+
+            playSuccess() {
+                const frequencies = [523.25, 659.25, 783.99];
+                frequencies.forEach((freq, index) => {
+                    setTimeout(() => this.createTone(freq, 0.25, 0.15, 'sine'), index * 120);
+                });
+            }
+
+            playError() {
+                this.createTone(311.13, 0.4, 0.2, 'triangle');
+            }
+
+            playSelection() {
+                this.createTone(659.25, 0.15, 0.1, 'sine');
+                setTimeout(() => this.createTone(830.61, 0.1, 0.08, 'sine'), 100);
+            }
+
+            createTone(frequency, duration, volume = 0.1, type = 'sine') {
+                if (!this.audioContext) return;
+
+                const oscillator = this.audioContext.createOscillator();
+                const gainNode = this.audioContext.createGain();
+
+                oscillator.connect(gainNode);
+                gainNode.connect(this.audioContext.destination);
+
+                oscillator.frequency.setValueAtTime(frequency, this.audioContext.currentTime);
+                oscillator.type = type;
+
+                gainNode.gain.setValueAtTime(0, this.audioContext.currentTime);
+                gainNode.gain.linearRampToValueAtTime(volume, this.audioContext.currentTime + 0.01);
+                gainNode.gain.exponentialRampToValueAtTime(0.001, this.audioContext.currentTime + duration);
+
+                oscillator.start(this.audioContext.currentTime);
+                oscillator.stop(this.audioContext.currentTime + duration);
+            }
+        }
+
+        const audioSystem = new AudioSystem();
+
+        // 音声機能
+        function getVoices() {
+            return speechSynthesis.getVoices();
+        }
+
+        function speakWord(word) {
+            if (!word) return;
+            
+            speechSynthesis.cancel();
+            
+            const utterance = new SpeechSynthesisUtterance(word);
+            const voices = getVoices();
+            
+            let selectedVoice = null;
+            
+            if (currentVoiceGender === 'male') {
+                selectedVoice = voices.find(voice => 
+                    voice.lang.startsWith('en') && 
+                    (voice.name.includes('Male') || voice.name.includes('David') || voice.name.includes('Mark'))
+                );
+            } else {
+                selectedVoice = voices.find(voice => 
+                    voice.lang.startsWith('en') && 
+                    (voice.name.includes('Female') || voice.name.includes('Samantha') || voice.name.includes('Victoria') || voice.name.includes('Karen'))
+                );
+            }
+            
+            if (!selectedVoice) {
+                selectedVoice = voices.find(voice => voice.lang.startsWith('en'));
+            }
+            
+            if (selectedVoice) {
+                utterance.voice = selectedVoice;
+            }
+            
+            utterance.rate = 0.85;
+            utterance.pitch = currentVoiceGender === 'male' ? 0.85 : 1.15;
+            utterance.volume = 0.8;
+            
+            const speakBtn = document.getElementById('speakBtn');
+            speakBtn.classList.add('active');
+            
+            utterance.onend = () => {
+                speakBtn.classList.remove('active');
+            };
+            
+            speechSynthesis.speak(utterance);
+            showNotification(`「${word}」を${currentVoiceGender === 'male' ? '男性' : '女性'}の声で再生中`);
+        }
+
+        function setVoiceGender(gender) {
+            currentVoiceGender = gender;
+            
+            document.querySelectorAll('.voice-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            if (gender === 'male') {
+                document.getElementById('maleVoiceBtn').classList.add('active');
+            } else {
+                document.getElementById('femaleVoiceBtn').classList.add('active');
+            }
+            
+            audioSystem.playSelection();
+            showNotification(`音声を${gender === 'male' ? '男性' : '女性'}に設定しました`);
+        }
+
+        // 通知システム
+        function showNotification(text) {
+            const notification = document.getElementById('notification');
+            const notificationText = document.getElementById('notificationText');
+            notificationText.textContent = text;
+            notification.classList.add('show');
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 4000);
+        }
+
+        // ナビゲーション機能
+        function hideAllModals() {
+            document.querySelectorAll('.modal').forEach(modal => {
+                modal.classList.remove('show');
+            });
+        }
+
+        function showCategorySelection() {
+            hideAllModals();
+            document.getElementById('categorySelectionModal').classList.add('show');
+            document.getElementById('gameScreen').classList.add('hidden');
+            document.getElementById('backToSelectionBtn').style.display = 'none';
+            currentCategory = '';
+            currentSelection = '';
+            document.querySelectorAll('.category-option, .grade-option, .pos-option').forEach(el => {
+                el.classList.remove('selected');
+            });
+            document.getElementById('selectCategoryBtn').disabled = true;
+        }
+
+        function showGradeSelection() {
+            hideAllModals();
+            document.getElementById('gradeSelectionModal').classList.add('show');
+            document.querySelectorAll('.grade-option').forEach(el => {
+                el.classList.remove('selected');
+            });
+            document.getElementById('startGradeGameBtn').disabled = true;
+        }
+
+        function showPosSelection() {
+            hideAllModals();
+            document.getElementById('posSelectionModal').classList.add('show');
+            document.querySelectorAll('.pos-option').forEach(el => {
+                el.classList.remove('selected');
+            });
+            document.getElementById('startPosGameBtn').disabled = true;
+        }
+
+        function showGameScreen() {
+            hideAllModals();
+            document.getElementById('gameScreen').classList.remove('hidden');
+            document.getElementById('backToSelectionBtn').style.display = 'flex';
+            
+            correctCount = 0;
+            wrongCount = 0;
+            totalCount = 0;
+            usedWords = [];
+            updateStats();
+        }
+
+        // ゲームロジック
+        function selectCategory(element, category) {
+            document.querySelectorAll('.category-option').forEach(el => {
+                el.classList.remove('selected');
+            });
+            
+            element.classList.add('selected');
+            currentCategory = category;
+            
+            document.getElementById('selectCategoryBtn').disabled = false;
+            
+            audioSystem.playClick();
+            const categoryName = category === 'grade' ? '学年別学習' : '品詞別学習';
+            showNotification(`${categoryName}を選択しました`);
+        }
+
+        function selectGrade(element, grade) {
+            document.querySelectorAll('.grade-option').forEach(el => {
+                el.classList.remove('selected');
+            });
+            
+            element.classList.add('selected');
+            currentSelection = grade;
+            
+            document.getElementById('startGradeGameBtn').disabled = false;
+            
+            audioSystem.playSelection();
+            showNotification(`${getGradeName(grade)}を選択しました`);
+        }
+
+        function selectPos(element, pos) {
+            document.querySelectorAll('.pos-option').forEach(el => {
+                el.classList.remove('selected');
+            });
+            
+            element.classList.add('selected');
+            currentSelection = pos;
+            
+            document.getElementById('startPosGameBtn').disabled = false;
+            
+            audioSystem.playSelection();
+            showNotification(`${getPosName(pos)}を選択しました`);
+        }
+
+        function getGradeName(grade) {
+            const names = {
+                'grade1': '中学1年生（基礎レベル）',
+                'grade2': '中学2年生（中級レベル）',
+                'grade3': '中学3年生（上級レベル）'
+            };
+            return names[grade] || '';
+        }
+
+        function getPosName(pos) {
+            const names = {
+                'noun': '名詞',
+                'verb': '動詞',
+                'adjective': '形容詞',
+                'adverb': '副詞',
+                'preposition': '前置詞',
+                'pronoun': '代名詞',
+                'functional': '機能語'
+            };
+            return names[pos] || '';
+        }
+
+        function startGame() {
+            if (!currentSelection) {
+                showNotification('学習コースを選択してください');
+                return;
+            }
+            
+            let modeName = '';
+            if (currentCategory === 'grade') {
+                modeName = `${getGradeName(currentSelection)} • 語源学習`;
+            } else {
+                modeName = `${getPosName(currentSelection)} • 語源学習`;
+            }
+            
+            document.getElementById('currentMode').textContent = modeName;
+            showGameScreen();
+            showNotification('学習を開始しました');
+        }
+
+        function generateQuiz() {
+            // **修正箇所: 品詞別データにも対応**
+            let wordsData = {};
+            
+            if (currentCategory === 'grade') {
+                // 学年別データを使用
+                wordsData = etymologyData[currentSelection] || {};
+            } else if (currentCategory === 'pos') {
+                // 品詞別データを使用
+                wordsData = etymologyDataByPOS[currentSelection] || {};
+            }
+            
+            const wordList = Object.keys(wordsData);
+            
+            if (wordList.length === 0) {
+                showNotification('このコースのデータがありません');
+                return;
+            }
+            
+            if (usedWords.length >= wordList.length) {
+                usedWords = [];
+                showNotification('全ての問題が完了しました。コースを再開します。');
+            }
+            
+            const availableWords = wordList.filter(word => !usedWords.includes(word));
+            const targetWord = availableWords[Math.floor(Math.random() * availableWords.length)];
+            usedWords.push(targetWord);
+            
+            const correctData = wordsData[targetWord];
+            
+            const options = [targetWord];
+            const otherWords = wordList.filter(word => word !== targetWord);
+            
+            // **修正箇所: すべてのデータソースから選択肢を生成**
+            const allWords = [];
+            
+            // 学年別データから単語を追加
+            Object.keys(etymologyData).forEach(key => {
+                allWords.push(...Object.keys(etymologyData[key]));
+            });
+            
+            // 品詞別データからも単語を追加（存在する場合）
+            if (typeof etymologyDataByPOS !== 'undefined') {
+                Object.keys(etymologyDataByPOS).forEach(key => {
+                    if (key !== currentSelection) {
+                        allWords.push(...Object.keys(etymologyDataByPOS[key]));
+                    }
+                });
+            }
+            
+            const mixedWords = [...otherWords, ...allWords];
+            
+            while (options.length < 4 && mixedWords.length > 0) {
+                const randomIndex = Math.floor(Math.random() * mixedWords.length);
+                const randomWord = mixedWords.splice(randomIndex, 1)[0];
+                if (!options.includes(randomWord)) {
+                    options.push(randomWord);
+                }
+            }
+            
+            const shuffledOptions = [...options].sort(() => Math.random() - 0.5);
+            const correctIndex = shuffledOptions.indexOf(targetWord);
+            
+            currentQuestionData = {
+                word: targetWord,
+                etymology: correctData.etymology,
+                hint: correctData.hint,
+                options: shuffledOptions,
+                correctIndex: correctIndex
+            };
+            
+            currentWord = targetWord;
+            showQuiz();
+        }
+
+        function showQuiz() {
+            const modal = document.getElementById('quizModal');
+            const etymologyText = document.getElementById('etymologyText');
+            const hintText = document.getElementById('hintText');
+            const hintDisplay = document.getElementById('hintDisplay');
+            const showHintBtn = document.getElementById('showHintBtn');
+            const optionsContainer = document.getElementById('quizOptions');
+            const resultDisplay = document.getElementById('resultDisplay');
+            const nextQuizBtn = document.getElementById('nextQuizBtn');
+            const questionNumber = document.getElementById('questionNumber');
+            
+            etymologyText.textContent = currentQuestionData.etymology;
+            hintText.textContent = currentQuestionData.hint;
+            hintDisplay.style.display = 'none';
+            showHintBtn.style.display = 'inline-block';
+            resultDisplay.style.display = 'none';
+            nextQuizBtn.style.display = 'none';
+            optionsContainer.innerHTML = '';
+            questionAnswered = false;
+            
+            questionNumber.textContent = `問題 ${totalCount + 1}`;
+            
+            currentQuestionData.options.forEach((option, index) => {
+                const btn = document.createElement('button');
+                btn.textContent = option;
+                btn.className = 'answer-option w-full text-lg font-medium';
+                btn.onclick = () => selectOption(index, btn);
+                optionsContainer.appendChild(btn);
+            });
+            
+            hideAllModals();
+            modal.classList.add('show');
+        }
+
+        function showHint() {
+            const hintDisplay = document.getElementById('hintDisplay');
+            const showHintBtn = document.getElementById('showHintBtn');
+            
+            hintDisplay.style.display = 'block';
+            showHintBtn.style.display = 'none';
+            
+            audioSystem.playClick();
+            showNotification('ヒントを表示しました');
+        }
+
+        function selectOption(selectedIndex, buttonElement) {
+            if (questionAnswered) return;
+            
+            questionAnswered = true;
+            totalCount++;
+            
+            const allButtons = document.querySelectorAll('.answer-option');
+            const isCorrect = selectedIndex === currentQuestionData.correctIndex;
+            
+            if (isCorrect) {
+                correctCount++;
+                buttonElement.classList.add('correct');
+                audioSystem.playSuccess();
+                showNotification('正解です！よくできました。');
+            } else {
+                wrongCount++;
+                buttonElement.classList.add('wrong');
+                allButtons[currentQuestionData.correctIndex].classList.add('correct');
+                audioSystem.playError();
+                showNotification('不正解です。正解を確認しましょう。');
+            }
+            
+            allButtons.forEach(btn => {
+                btn.style.pointerEvents = 'none';
+            });
+            
+            setTimeout(() => {
+                showResult(isCorrect);
+            }, 1800);
+            
+            updateStats();
+        }
+
+        function showResult(isCorrect) {
+            const resultDisplay = document.getElementById('resultDisplay');
+            const resultText = document.getElementById('resultText');
+            const correctWord = document.getElementById('correctWord');
+            const fullExplanation = document.getElementById('fullExplanation');
+            const nextQuizBtn = document.getElementById('nextQuizBtn');
+            
+            resultText.textContent = isCorrect ? '正解！' : '正解は';
+            resultText.style.color = isCorrect ? '#10b981' : '#d4af37';
+            
+            correctWord.textContent = currentQuestionData.word;
+            fullExplanation.innerHTML = `
+                <strong>語源:</strong> ${currentQuestionData.etymology}<br><br>
+                <strong>解説:</strong> ${currentQuestionData.hint}
+            `;
+            
+            resultDisplay.style.display = 'block';
+            nextQuizBtn.style.display = 'inline-block';
+            
+            setTimeout(() => {
+                speakWord(currentQuestionData.word);
+            }, 1200);
+        }
+
+        function updateStats() {
+            document.getElementById('correctCount').textContent = correctCount;
+            document.getElementById('wrongCount').textContent = wrongCount;
+            document.getElementById('totalCount').textContent = totalCount;
+            
+            const progressFill = document.getElementById('progressFill');
+            const accuracy = totalCount > 0 ? (correctCount / totalCount) * 100 : 0;
+            progressFill.style.width = accuracy + '%';
+        }
+
+        // イベントリスナー
+        document.addEventListener('DOMContentLoaded', () => {
+            // 音声システム
+            if (speechSynthesis.onvoiceschanged !== undefined) {
+                speechSynthesis.onvoiceschanged = () => {
+                    setVoiceGender('female');
+                };
+            }
+            
+            document.getElementById('maleVoiceBtn').addEventListener('click', () => {
+                setVoiceGender('male');
+            });
+            
+            document.getElementById('femaleVoiceBtn').addEventListener('click', () => {
+                setVoiceGender('female');
+            });
+            
+            document.getElementById('speakBtn').addEventListener('click', () => {
+                if (currentWord) {
+                    speakWord(currentWord);
+                } else {
+                    showNotification('再生する単語がありません');
+                }
+            });
+            
+            // カテゴリー選択
+            document.querySelectorAll('.category-option').forEach(el => {
+                el.addEventListener('click', (e) => {
+                    const category = e.currentTarget.dataset.category;
+                    selectCategory(e.currentTarget, category);
+                });
+            });
+            
+            document.getElementById('selectCategoryBtn').addEventListener('click', () => {
+                if (currentCategory === 'grade') {
+                    showGradeSelection();
+                } else if (currentCategory === 'pos') {
+                    showPosSelection();
+                }
+                audioSystem.playClick();
+            });
+            
+            // 学年選択
+            document.querySelectorAll('.grade-option').forEach(el => {
+                el.addEventListener('click', (e) => {
+                    const grade = e.currentTarget.dataset.grade;
+                    selectGrade(e.currentTarget, grade);
+                });
+            });
+            
+            // 品詞選択
+            document.querySelectorAll('.pos-option').forEach(el => {
+                el.addEventListener('click', (e) => {
+                    const pos = e.currentTarget.dataset.pos;
+                    selectPos(e.currentTarget, pos);
+                });
+            });
+            
+            // ゲームコントロール
+            document.getElementById('startGradeGameBtn').addEventListener('click', startGame);
+            document.getElementById('startPosGameBtn').addEventListener('click', startGame);
+            
+            document.getElementById('backToCategoryBtn').addEventListener('click', () => {
+                showCategorySelection();
+                audioSystem.playClick();
+            });
+            
+            document.getElementById('backToCategoryFromPosBtn').addEventListener('click', () => {
+                showCategorySelection();
+                audioSystem.playClick();
+            });
+            
+            document.getElementById('nextQuestionBtn').addEventListener('click', () => {
+                audioSystem.playClick();
+                generateQuiz();
+            });
+            
+            document.getElementById('showHintBtn').addEventListener('click', showHint);
+            
+            document.getElementById('nextQuizBtn').addEventListener('click', () => {
+                audioSystem.playClick();
+                generateQuiz();
+            });
+            
+            document.getElementById('backToGameBtn').addEventListener('click', () => {
+                audioSystem.playClick();
+                hideAllModals();
+            });
+            
+            document.getElementById('backToSelectionBtn').addEventListener('click', () => {
+                audioSystem.playClick();
+                showCategorySelection();
+            });
+            
+            // オーディオコンテキスト
+            document.addEventListener('click', () => {
+                if (audioSystem.audioContext && audioSystem.audioContext.state === 'suspended') {
+                    audioSystem.audioContext.resume();
+                }
+            }, { once: true });
+            
+            showNotification('語源クイズアプリへようこそ！');
+        });
+    </script>
+</body>
+</html>
